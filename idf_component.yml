@@ -1,0 +1,7 @@
+version: "1.0.0"
+description: Model Predictive Controller (MPC) for the ESP32 microcontroller
+repository:
+url: https://github.com/kirkrudolph/esp_mpc
+
+dependencies:
+  esp-idf: ">=4.3.0"

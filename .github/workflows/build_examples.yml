@@ -1,0 +1,43 @@
+# This is a basic workflow to help you get started with Actions
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job
+  Build-and-Inspect:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout repository and submodules
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      # Verify tags were fetched
+      - name: App Version (GitHub Actions)
+        run: git describe
+
+      # Need to "git config --global --add safe.directory /project" so git isn't "dubious". Else, App version becomes 1 because "not a git directory".
+      - name: Build
+        run: |
+          docker run --rm -v $PWD/examples/:/project -w /project espressif/idf:v5.0 /bin/bash -c 'git config --global --add safe.directory /project && idf.py build'
+
+      - name: Component size
+        run: docker run --rm -v $PWD/examples/:/project -w /project espressif/idf:v5.0 idf.py size-components
+        
+      - name: File size
+        run: docker run --rm -v $PWD:/project -w /project espressif/idf:v5.0 idf.py size-files
