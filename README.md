@@ -16,7 +16,7 @@ Port of OSQP embedded Quadratic Program (QP) solver for ESP32.
 
 ## Getting Started
 
-See the examples folder.
+See the [examples](examples) directory.
 
 ## OSQP References
 - [Github](https://github.com/osqp/osqp)

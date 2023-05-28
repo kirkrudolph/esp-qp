@@ -29,7 +29,7 @@ jobs:
 
       # Verify tags were fetched
       - name: App Version (GitHub Actions)
-        run: git describe
+        run: git describe --tags --always --dirty
 
       # Need to "git config --global --add safe.directory /project" so git isn't "dubious". Else, App version becomes 1 because "not a git directory".
       - name: Build
